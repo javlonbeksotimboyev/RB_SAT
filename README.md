@@ -1,14 +1,26 @@
-### Generate full question bank
+## Generator & Import
 
-This project includes a generator script that produces 30 Math + 30 English questions per grade (grades 5–11) and writes them to `data/questions.json`.
+I added two scripts to help you generate the full question bank and import it into Firestore.
 
-To generate the full bank locally:
+1) Generate the questions (locally)
 
-1. Install dependencies (Node.js 16+)
-   npm install
-2. Run the generator
-   node scripts/generate_questions.js
-3. The file `data/questions.json` will be created (or overwritten) with the generated questions.
+   npm run generate-questions
 
-After generating, you can import the questions into Firestore using the Admin → "Import questions to Firestore" button (requires Firebase project configured and admin user signed in), or run a server-side import script with service account credentials.
+This runs `scripts/generate_questions.js` and writes `data/questions.json` with 30 math + 30 english items per grade (grades 5–11).
 
+2) Import into Firestore (server/service account required)
+
+   Export a Firebase service account key from your Firebase project (IAM & Admin) and save the JSON locally.
+
+   Then run:
+
+   node scripts/import_to_firestore.js /path/to/serviceAccount.json
+
+   Or set the environment variable:
+
+   export GOOGLE_APPLICATION_CREDENTIALS="/path/to/serviceAccount.json"
+   node scripts/import_to_firestore.js
+
+This will bulk-write all questions to the `questions` collection in your Firestore.
+
+Note: Do not commit your service account key to the repo. Run the import from a secure machine.

@@ -6,12 +6,17 @@
     "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-questions": "node scripts/generate_questions.js",
+    "import-questions": "node scripts/import_to_firestore.js"
   },
   "dependencies": {
     "firebase": "^9.23.0",
     "next": "13.4.10",
     "react": "18.2.0",
     "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "firebase-admin": "^11.10.0"
   }
 }
