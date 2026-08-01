@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
-import { initFirebase } from '../lib/firebase'
+import { initFirebase, getDB } from '../lib/firebase'
 import { useRouter } from 'next/router'
+import { doc, setDoc } from 'firebase/firestore'
 
 initFirebase()
 export default function Signup(){
@@ -19,6 +20,18 @@ export default function Signup(){
       await updateProfile(userCred.user,{displayName:name})
       // Save grade in localStorage until Firestore is hooked
       localStorage.setItem('user-grade', grade)
+
+      // create user doc in Firestore if available
+      const db = getDB()
+      if(db){
+        const adminEnv = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || '')
+        const admins = adminEnv.split(',').map(s=>s.trim()).filter(Boolean)
+        const isAdmin = admins.includes(email)
+        await setDoc(doc(db,'users', userCred.user.uid), {
+          name, email, grade, createdAt: new Date().toISOString(), isAdmin
+        })
+      }
+
       router.push('/dashboard')
     }catch(err){
       alert(err.message)

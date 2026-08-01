@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react'
 import questions from '../../data/questions.json'
 import { gradePercent, percentToLevel, recommendationsFromWrong } from '../../utils/score'
 import { useRouter } from 'next/router'
+import { initFirebase, getClientAuth, getDB } from '../../lib/firebase'
+import { doc, setDoc } from 'firebase/firestore'
 
+initFirebase()
 export default function TestPage(){
   const router = useRouter()
   const [answers,setAnswers] = useState({})
@@ -14,7 +17,7 @@ export default function TestPage(){
   const engQs = questions.filter(q=>q.section==='english' && q.grade_min<=parseInt(grade) && q.grade_max>=parseInt(grade)).slice(0,30)
 
   function choose(id,idx){ setAnswers(prev=>({...prev,[id]:idx})) }
-  function submit(){ setSubmitted(true)
+  async function submit(){ setSubmitted(true)
     const mathCorrect = mathQs.reduce((acc,q)=> acc + ((answers[q.id]===q.answer)?1:0), 0)
     const engCorrect = engQs.reduce((acc,q)=> acc + ((answers[q.id]===q.answer)?1:0), 0)
     const mathPct = gradePercent(mathCorrect, mathQs.length)
@@ -23,12 +26,38 @@ export default function TestPage(){
     const engLevel = percentToLevel(engPct)
     const recMath = recommendationsFromWrong(mathQs, answers)
     const recEng = recommendationsFromWrong(engQs, answers)
-    const result = { timestamp: new Date().toISOString(), mathCorrect, engCorrect, mathPct, engPct, mathLevel, engLevel, recMath, recEng }
+    const result = { timestamp: new Date().toISOString(), mathCorrect, engCorrect, mathPct, engPct, mathLevel, engLevel, recMath, recEng, grade }
     // save locally for now
     const prev = JSON.parse(localStorage.getItem('rb_sat_results')||'[]')
     prev.unshift(result)
     localStorage.setItem('rb_sat_results', JSON.stringify(prev.slice(0,20)))
     localStorage.setItem('rb_sat_latest', JSON.stringify(result))
+
+    // also attempt to save to Firestore if available and user is authenticated
+    const auth = getClientAuth()
+    const db = getDB()
+    try{
+      if(auth && auth.currentUser && db){
+        await setDoc(doc(db,'results', `${auth.currentUser.uid}_${Date.now()}`), {
+          uid: auth.currentUser.uid,
+          email: auth.currentUser.email || null,
+          name: auth.currentUser.displayName || null,
+          grade,
+          mathCorrect,
+          engCorrect,
+          mathPct,
+          engPct,
+          mathLevel,
+          engLevel,
+          recMath,
+          recEng,
+          answers,
+          createdAt: new Date().toISOString()
+        })
+      }
+    }catch(err){
+      console.error('Failed to write result to Firestore', err)
+    }
   }
 
   if(!submitted){
@@ -57,7 +86,7 @@ export default function TestPage(){
             ))}
           </div>
         ))}
-        <button onClick={()=>{ setSubmitted(true); submit(); }}>Submit</button>
+        <button onClick={submit}>Submit</button>
       </div>
     )
   }
