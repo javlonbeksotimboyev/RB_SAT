@@ -1,0 +1,10 @@
+[
+  { "id": "m5_1", "section": "math", "grade_min": 5, "grade_max": 5, "text": "Compute: 15 × 6 = ?", "options": ["80","85","90","95"], "answer": 2, "topics": ["arithmetic"] },
+  { "id": "m5_2", "section": "math", "grade_min": 5, "grade_max": 5, "text": "If a box has 24 apples and 3 friends share equally, how many each?", "options": ["6","7","8","9"], "answer": 0, "topics": ["division"] },
+
+  { "id": "e5_1", "section": "english", "grade_min": 5, "grade_max": 5, "text": "Choose the correct sentence:", "options": ["He go to school.","He goes to school.","He going to school.","He gone to school."], "answer": 1, "topics":["grammar"] },
+
+  { "id": "m8_1", "section": "math", "grade_min": 8, "grade_max": 11, "text": "If 2x + 3 = 11, what is x?", "options": ["3","4","5","6"], "answer": 1, "topics":["algebra"] },
+  { "id": "m9_1", "section": "math", "grade_min": 9, "grade_max": 11, "text": "If f(x)=x^2 and g(x)=x+1, f(g(2)) = ?", "options": ["9","6","8","7"], "answer": 0, "topics":["functions"] },
+  { "id": "e9_1", "section": "english", "grade_min": 8, "grade_max": 11, "text": "Read: 'The dog chased the ball, which rolled under the car.' The clause 'which rolled under the car' is:", "options":["Restrictive clause","Non-restrictive clause","Independent clause","Adverbial clause"], "answer":1, "topics":["reading-comprehension"] }
+]
