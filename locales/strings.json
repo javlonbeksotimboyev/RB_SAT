@@ -1,0 +1,18 @@
+{
+  "uz": {
+    "welcome": "RB_SAT — Diagnostika",
+    "signup": "Ro'yxatdan o'tish",
+    "login": "Kirish",
+    "dashboard": "Dashboard",
+    "start_test": "Diagnostikani boshlash",
+    "admin": "Admin"
+  },
+  "en": {
+    "welcome": "RB_SAT — Adaptive Diagnostic",
+    "signup": "Sign up",
+    "login": "Log in",
+    "dashboard": "Dashboard",
+    "start_test": "Start Diagnostic",
+    "admin": "Admin"
+  }
+}

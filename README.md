@@ -1,27 +1,14 @@
-# RB_SAT
+### Generate full question bank
 
-SAT Adaptive Diagnostic Test
+This project includes a generator script that produces 30 Math + 30 English questions per grade (grades 5–11) and writes them to `data/questions.json`.
 
-This repository contains a Next.js + Firebase starter for an adaptive diagnostic platform for Uzbek students (grades 5–11). It includes student sign-up, 30-question diagnostics (Math + English), level mapping, and a teacher/admin dashboard.
+To generate the full bank locally:
 
-Overview
-- Next.js frontend
-- Firebase Auth (email/password) and Firestore for data (env placeholders included)
-- Admin UI to manage question bank and view student results
+1. Install dependencies (Node.js 16+)
+   npm install
+2. Run the generator
+   node scripts/generate_questions.js
+3. The file `data/questions.json` will be created (or overwritten) with the generated questions.
 
-Quick start (development)
-1. Clone the repo
-2. Copy .env.example to .env.local and fill in your Firebase config
-3. Install dependencies: npm install
-4. Run dev server: npm run dev
+After generating, you can import the questions into Firestore using the Admin → "Import questions to Firestore" button (requires Firebase project configured and admin user signed in), or run a server-side import script with service account credentials.
 
-Firebase setup
-1. Create a Firebase project at https://console.firebase.google.com/
-2. Enable Authentication → Email/Password
-3. Create a Firestore database (in test mode for initial setup)
-4. Add your Firebase config to .env.local
-
-Deployment
-- Host on Vercel (recommended) and set environment variables there.
-
-See README for details.
